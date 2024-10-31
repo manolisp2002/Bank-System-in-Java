@@ -3,9 +3,9 @@ package View;
 import javax.swing.*;
 import java.awt.*;
 
-public class Login extends BaseFrame {
+public class LoginGui extends BaseFrame {
 
-    public Login(String title) {
+    public LoginGui(String title) {
         super("Bank User Login");
     }
 
