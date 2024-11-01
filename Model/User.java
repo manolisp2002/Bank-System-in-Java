@@ -1,7 +1,7 @@
 package Model;
 
 public class User {
-    private String id;
+    private int id;
     private String username;
     private String password;
     private double balance;
@@ -9,14 +9,14 @@ public class User {
 
 
     //construcor
-    public  User(String id, String username, String password, double balance) {
+    public  User(int id, String username, String password, double balance) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.balance = balance;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 

@@ -1,20 +1,30 @@
 package View;
 
+import Model.User;
+
 import javax.swing.*;
 import java.awt.*;
 
 public class BankUserGui extends BaseFrame{
     private JTextField currentBalancField;
+    private User user;
+
+
+
+
     public JTextField getCurrentBalancField() {
         return currentBalancField;
     }
-    public BankUserGui(String title) {
-        super("Bank User");
+    public BankUserGui(User user) {
+        super("Bank User " + user.getUsername());
+        this.user = user;
     }
+
 
     @Override
     protected void addGuiComponents() {
         //private cause it will be used in other classes
+
 
 
         String welcomeMessage = ("<html><body style='text-align:center'><b>Hello %s</b><br>" +

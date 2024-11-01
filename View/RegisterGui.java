@@ -5,14 +5,14 @@ import java.awt.*;
 
 public class RegisterGui extends BaseFrame {
 
-    public RegisterGui(String title) {
+    public RegisterGui() {
         super("Bank User Registration");
     }
 
     @Override
     protected void addGuiComponents() {
 
-        JLabel bankinfo = new JLabel("Bank User Login");
+        JLabel bankinfo = new JLabel("Bank User Registration");
         bankinfo.setBounds(0, 20, super.getWidth(), 40);
         bankinfo.setFont(new Font("Arial", Font.BOLD, 32));
         bankinfo.setHorizontalAlignment(SwingConstants.CENTER);
@@ -44,6 +44,7 @@ public class RegisterGui extends BaseFrame {
         JButton registerButton = new JButton("Register");
         registerButton.setBounds(20, 440, getWidth() - 50, 40);
         registerButton.setFont(new Font("Arial", Font.PLAIN, 28));
+
 
         JLabel loginLabel = new JLabel("<html><a href=''>Already have an acoount? Login here!</a></html>");
         loginLabel.setBounds(20, 510, getWidth() - 10, 30);

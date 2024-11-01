@@ -1,7 +1,11 @@
 package Controller;
 
+import Model.User;
+
 public class AuthenticatorController {
-    public boolean authenticateLogin(String username, String password) {
+
+
+    public  boolean authenticateLogin(User user) {
         return false;
     }
 
