@@ -2,6 +2,8 @@ package View;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class RegisterGui extends BaseFrame {
 
@@ -44,6 +46,30 @@ public class RegisterGui extends BaseFrame {
         JButton registerButton = new JButton("Register");
         registerButton.setBounds(20, 440, getWidth() - 50, 40);
         registerButton.setFont(new Font("Arial", Font.PLAIN, 28));
+        //action listener for the register button
+        registerButton.addActionListener(e -> {
+            //get the username and password of the user
+            String username = usernameField.getText();
+            String password = new String(passwordField.getPassword());
+            String confirmPassword = new String(confirmPasswordField.getPassword());
+
+            //validate the user(this will change it to an other class) //user name mast be at least 5 chars long)
+            if(password.equals(confirmPassword)  && !username.isEmpty() && !password.isEmpty()) {
+                //register the user
+                if(Controller.ControllerJDBC.registerUser(username, password)) {
+
+                    //show the login gui
+                    RegisterGui.this.dispose();
+                    LoginGui loginGui = new LoginGui("Bank User Login");
+                    loginGui.setVisible(true);
+                    JOptionPane.showMessageDialog(RegisterGui.this, "User registered successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(RegisterGui.this, "Error: Username already exists", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            } else {
+                JOptionPane.showMessageDialog(RegisterGui.this, "Passwords do not match", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        });
 
 
         JLabel loginLabel = new JLabel("<html><a href=''>Already have an acoount? Login here!</a></html>");
@@ -51,6 +77,14 @@ public class RegisterGui extends BaseFrame {
         loginLabel.setFont(new Font("Arial", Font.PLAIN, 20));
         loginLabel.setForeground(Color.BLUE);
         loginLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        loginLabel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                RegisterGui.this.dispose();
+                LoginGui loginGui = new LoginGui("Bank User Login");
+                loginGui.setVisible(true);
+            }
+        });
 
 
 

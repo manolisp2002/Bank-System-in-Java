@@ -10,8 +10,6 @@ public class BankUserGui extends BaseFrame{
     private User user;
 
 
-
-
     public JTextField getCurrentBalancField() {
         return currentBalancField;
     }
