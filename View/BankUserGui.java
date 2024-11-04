@@ -4,8 +4,10 @@ import Model.User;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-public class BankUserGui extends BaseFrame{
+public class BankUserGui extends BaseFrame implements ActionListener {
     private JTextField currentBalancField;
     private User user;
 
@@ -49,22 +51,27 @@ public class BankUserGui extends BaseFrame{
         JButton depositButton = new JButton("Deposit");
         depositButton.setBounds(15, 200, getWidth() - 50, 50);
         depositButton.setFont(new Font("Arial", Font.BOLD, 22));
+        depositButton.addActionListener(this);
 
         JButton withdrawButton = new JButton("Withdraw");
         withdrawButton.setBounds(15, 260, getWidth() - 50, 50);
         withdrawButton.setFont(new Font("Arial", Font.BOLD, 22));
+        withdrawButton.addActionListener(this);
 
         JButton transferButton = new JButton("Transfer");
         transferButton.setBounds(15, 320, getWidth() - 50, 50);
         transferButton.setFont(new Font("Arial", Font.BOLD, 22));
+        transferButton.addActionListener(this);
 
         JButton lastTransactionButton = new JButton("Last Transaction");
         lastTransactionButton.setBounds(15, 380, getWidth() - 50, 50);
         lastTransactionButton.setFont(new Font("Arial", Font.BOLD, 22));
+        lastTransactionButton.addActionListener(this);
 
         JButton logoutButton = new JButton("Logout");
         logoutButton.setBounds(15, 500, getWidth() - 50, 50);
         logoutButton.setFont(new Font("Arial", Font.BOLD, 22));
+        logoutButton.addActionListener(this);
 
 
 
@@ -86,6 +93,42 @@ public class BankUserGui extends BaseFrame{
         add(lastTransactionButton);
         add(logoutButton);
     }
+
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        String action = e.getActionCommand();
+
+        //user logged out
+        if (action.equalsIgnoreCase("Logout")) {
+            this.dispose();
+            new LoginGui("Bank User Login").setVisible(true);
+            return;
+        }
+
+        BankingDialog bankingDialog = new BankingDialog(this, user);
+        bankingDialog.setTitle(action);
+
+        //if user clicked on last transaction, we don't need to show the balance field
+        if(!action.equalsIgnoreCase("Last Transaction")){
+            bankingDialog.addBalance();
+            bankingDialog.addActionButton(action);
+            bankingDialog.setVisible(true);
+
+            if(action.equalsIgnoreCase("Transfer")){
+                bankingDialog.addUserTrasferfield( );
+            }
+            bankingDialog.setVisible(true);
+
+        }
+
+
+        }
+
+
+
+
+
 
 
 }
