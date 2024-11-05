@@ -35,4 +35,8 @@ public class User {
     public void setBalance(double balance) {
         this.balance = balance;
     }
+
+    public void addBalance(double amount) {
+        this.balance += amount;
+    }
 }

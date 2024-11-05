@@ -42,7 +42,7 @@ public class BankUserGui extends BaseFrame implements ActionListener {
         accountBalanceLabel.setFont(new Font("Arial", Font.BOLD, 22));
         accountBalanceLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
-        currentBalancField = new JTextField("$" + "user.getBalance()");
+        currentBalancField = new JTextField();
         currentBalancField.setBounds(20, 120, getWidth() - 50, 40);
         currentBalancField.setFont(new Font("Arial", Font.BOLD, 28));
         currentBalancField.setEditable(false);
@@ -73,16 +73,6 @@ public class BankUserGui extends BaseFrame implements ActionListener {
         logoutButton.setFont(new Font("Arial", Font.BOLD, 22));
         logoutButton.addActionListener(this);
 
-
-
-
-
-
-
-
-
-
-
         add(welcomeLabel);
         add(accountBalanceLabel);
         add(accountBalanceLabel);
@@ -110,20 +100,24 @@ public class BankUserGui extends BaseFrame implements ActionListener {
         bankingDialog.setTitle(action);
 
         //if user clicked on last transaction, we don't need to show the balance field
-        if(!action.equalsIgnoreCase("Last Transaction")){
+        if (!action.equalsIgnoreCase("Last Transaction")) {
             bankingDialog.addBalance();
             bankingDialog.addActionButton(action);
             bankingDialog.setVisible(true);
 
-            if(action.equalsIgnoreCase("Transfer")){
-                bankingDialog.addUserTrasferfield( );
+            if (action.equalsIgnoreCase("Transfer")) {
+                bankingDialog.addUserTransferfield();
             }
             bankingDialog.setVisible(true);
 
-        }
+        } else{
+            bankingDialog.addPastTransactionsComponents();
 
 
+
         }
+        bankingDialog.setVisible(true);
+    }
 
 
 
