@@ -8,16 +8,18 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class BankUserGui extends BaseFrame implements ActionListener {
-    private JTextField currentBalancField;
-    private User user;
+    private JTextField currentBalanceField;
+    private String userName;
+    private double userBalance;
 
 
     public JTextField getCurrentBalancField() {
-        return currentBalancField;
+        return currentBalanceField;
     }
     public BankUserGui(User user) {
-        super("Bank User " + user.getUsername());
-        this.user = user;
+        super("Bank User " + user.getUsername() , user);
+
+
     }
 
 
@@ -27,8 +29,9 @@ public class BankUserGui extends BaseFrame implements ActionListener {
 
 
 
+
         String welcomeMessage = ("<html><body style='text-align:center'><b>Hello %s</b><br>" +
-                "Welcome to the Bank User Portal</body></html>").formatted("user.getUsername()");
+                "Welcome to the Bank User Portal</body></html>").formatted(user.getUsername());
 
 
 
@@ -42,11 +45,11 @@ public class BankUserGui extends BaseFrame implements ActionListener {
         accountBalanceLabel.setFont(new Font("Arial", Font.BOLD, 22));
         accountBalanceLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
-        currentBalancField = new JTextField();
-        currentBalancField.setBounds(20, 120, getWidth() - 50, 40);
-        currentBalancField.setFont(new Font("Arial", Font.BOLD, 28));
-        currentBalancField.setEditable(false);
-        currentBalancField.setHorizontalAlignment(SwingConstants.RIGHT);
+        currentBalanceField = new JTextField("$" + user.getBalance());
+        currentBalanceField.setBounds(20, 120, getWidth() - 50, 40);
+        currentBalanceField.setFont(new Font("Arial", Font.BOLD, 28));
+        currentBalanceField.setEditable(false);
+        currentBalanceField.setHorizontalAlignment(SwingConstants.RIGHT);
 
         JButton depositButton = new JButton("Deposit");
         depositButton.setBounds(15, 200, getWidth() - 50, 50);
@@ -76,7 +79,7 @@ public class BankUserGui extends BaseFrame implements ActionListener {
         add(welcomeLabel);
         add(accountBalanceLabel);
         add(accountBalanceLabel);
-        add(currentBalancField);
+        add(currentBalanceField);
         add(depositButton);
         add(withdrawButton);
         add(transferButton);
@@ -97,24 +100,22 @@ public class BankUserGui extends BaseFrame implements ActionListener {
         }
 
         BankingDialog bankingDialog = new BankingDialog(this, user);
+
         bankingDialog.setTitle(action);
 
         //if user clicked on last transaction, we don't need to show the balance field
-        if (!action.equalsIgnoreCase("Last Transaction")) {
+        if (action.equalsIgnoreCase("Deposit") || action.equalsIgnoreCase("Withdraw")
+                || action.equalsIgnoreCase("Transfer")) {
+
             bankingDialog.addBalance();
             bankingDialog.addActionButton(action);
-            bankingDialog.setVisible(true);
 
             if (action.equalsIgnoreCase("Transfer")) {
                 bankingDialog.addUserTransferfield();
             }
-            bankingDialog.setVisible(true);
-
-        } else{
+        }
+        else if(action.equalsIgnoreCase("Last Transaction")){
             bankingDialog.addPastTransactionsComponents();
-
-
-
         }
         bankingDialog.setVisible(true);
     }

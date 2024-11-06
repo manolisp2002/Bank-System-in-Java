@@ -10,11 +10,13 @@ import Model.Transaction;
 
 public class ControllerJDBC {
 
-    private static final String DB_URL = "jdbc:mysql://localhost:3306/bankapp";
+    private static final String DB_URL = "jdbc:mysql://127.0.0.1:3306/bankapp";
     private static final String DB_USER   = "root";
     private static final String DB_PASS   = "manolis12345";
 
+
     public static AuthenticatorController autController = new AuthenticatorController();
+
 
     public static User validateLogin(String username,String password)  {
         try {
@@ -38,6 +40,7 @@ public class ControllerJDBC {
         return null;
     }
 
+    //true-if the user was registered successfully
     public static boolean registerUser(String username, String password) {
         try {
 
@@ -89,10 +92,20 @@ public class ControllerJDBC {
             Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
 
             PreparedStatement stmt = conn.prepareStatement(
-                    "INSERT INTO transactions (user_id, transaction_type, amount, transaction_date) VALUES (?, ?, ?, NOW())");
-            stmt.setInt(1, transaction.getUserId());
-            stmt.setString(2, transaction.getTransactionType());
-            stmt.setDouble(3, transaction.getAmount());
+                    "INSERT INTO transactions (id, user_id, transaction_type, transaction_amaount, transaction_date) " +
+                            "VALUES (?, ?, ?, ?, NOW())"
+            );
+
+            //transaction table in sql has this fields
+            //id
+            //transaction_amaount
+            //transaction_date
+            //transaction_type
+            //user_id
+            stmt.setInt(1, transaction.getTransactionId());
+            stmt.setInt(2, transaction.getUserId());
+            stmt.setString(3, transaction.getTransactionType());
+            stmt.setDouble(4, transaction.getAmount());
 
             stmt.executeUpdate();
 
@@ -188,15 +201,15 @@ public class ControllerJDBC {
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
-                transactions.add(new Transaction(
+                Transaction transaction = new Transaction(
                         rs.getInt("user_id"),
                         rs.getString("transaction_type"),
-                        rs.getDouble("amount"),
-                        rs.getDate("transaction_date")));
+                        rs.getDouble("transaction_amaount"),
+                        rs.getDate("transaction_date")
+                );
+
+                transactions.add(transaction);
             }
-
-
-
         } catch (SQLException e) {
             e.printStackTrace();
         }

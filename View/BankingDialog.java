@@ -33,6 +33,9 @@ public class BankingDialog extends JDialog implements ActionListener {
 
         setLayout(null);
 
+        //not to be able to interact with the parent window
+        setModal(true);
+
         //need reference to our gui so we can update current balance after deposit/withdraw
         this.bankUserGui = bankUserGui;
         //need reference to our user so we can update the balance in the database
@@ -91,44 +94,64 @@ public class BankingDialog extends JDialog implements ActionListener {
     }
 
     public void addPastTransactionsComponents(){
+        // Container where we will store each transaction
         pastTranslationPanel = new JPanel();
+        // Set layout to stack components vertically
         pastTranslationPanel.setLayout(new BoxLayout(pastTranslationPanel, BoxLayout.Y_AXIS));
-        //add scroll ability
+
+        // Add scrollability to the container
         JScrollPane scrollPane = new JScrollPane(pastTranslationPanel);
+
+        // Set vertical scroll bar to show only when necessary
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.setBounds(0, 20, getWidth() - 15, getHeight() - 80);
 
-        pastTranslationPanel.setBounds(0, 20, getWidth() - 15, getHeight() - 15);
-
-        //perform db call to get the last 5 transactions
+        // Perform DB call to retrieve all of the past transactions and store in ArrayList
         pastTransactions = ControllerJDBC.getTransaction(user);
-        //iterate through the transactions and add them to the panel
-        for(int i = 0; i < pastTransactions.size(); i++){
-            Transaction transaction = pastTransactions.get(i);
 
+        // Check if the transactions list is empty or null
+        if (pastTransactions == null || pastTransactions.isEmpty()) {
+            System.out.println("No past transactions found.");
+        }
+
+        // Iterate through the list and add to the GUI
+        for (Transaction transaction : pastTransactions) {
+            // Create a container to store an individual transaction
             JPanel pastTransactionContainer = new JPanel();
             pastTransactionContainer.setLayout(new BorderLayout());
 
+            // Create transaction type label
             JLabel transactionTypeLabel = new JLabel(transaction.getTransactionType());
-            transactionTypeLabel.setFont(new Font("Arial", Font.BOLD, 20));
+            transactionTypeLabel.setFont(new Font("Dialog", Font.BOLD, 20));
 
+            // Create transaction amount label
             JLabel transactionAmountLabel = new JLabel("$" + transaction.getAmount());
-            transactionAmountLabel.setFont(new Font("Arial", Font.BOLD, 20));
+            transactionAmountLabel.setFont(new Font("Dialog", Font.BOLD, 20));
 
+            // Create transaction date label
             JLabel transactionDateLabel = new JLabel(String.valueOf(transaction.getTransactionDate()));
-            transactionDateLabel.setFont(new Font("Arial", Font.BOLD, 20));
+            transactionDateLabel.setFont(new Font("Dialog", Font.BOLD, 20));
 
-            pastTransactionContainer.add(transactionTypeLabel, BorderLayout.WEST);
-            pastTransactionContainer.add(transactionAmountLabel, BorderLayout.EAST);
-            pastTransactionContainer.add(transactionDateLabel, BorderLayout.SOUTH);
+            // Add to the container
+            pastTransactionContainer.add(transactionTypeLabel, BorderLayout.WEST); // Place on the west side
+            pastTransactionContainer.add(transactionAmountLabel, BorderLayout.EAST); // Place on the east side
+            pastTransactionContainer.add(transactionDateLabel, BorderLayout.SOUTH); // Place on the south side
 
+            // Set white background and black border for visual separation
             pastTransactionContainer.setBackground(Color.WHITE);
+            pastTransactionContainer.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
+            // Add transaction component to the transaction panel
             pastTranslationPanel.add(pastTransactionContainer);
         }
 
+        // Add the scroll pane to the dialog or JFrame
+        getContentPane().add(scrollPane, BorderLayout.CENTER); // Ensure it's added to the main content pane
 
+        // Revalidate and repaint to refresh the layout and display
+        revalidate();
+        repaint();
     }
-
 
 
     private void handleTransaction(String transactionType, double amountVal) {
@@ -165,7 +188,7 @@ public class BankingDialog extends JDialog implements ActionListener {
         }
 
         //update the balance in the dialog
-        currentBalanceLabel.setText("Current Balance: $" + user.getBalance());
+        currentBalanceLabel.setText("Balance: $" + user.getBalance());
 
         //update the balance in the main gui
         bankUserGui.getCurrentBalancField().setText("$" + user.getBalance());
@@ -218,6 +241,11 @@ public class BankingDialog extends JDialog implements ActionListener {
         }
 
     }
+
+
+
+
+
 }
 
 

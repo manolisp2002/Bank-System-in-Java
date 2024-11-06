@@ -3,6 +3,7 @@ package Model;
 import java.util.Date;
 
 public class Transaction{
+    private final int transaction_id;
     private final int userId;
     private final String transactionType;
     private final double amount;
@@ -13,6 +14,12 @@ public class Transaction{
         this.transactionType = transactionType;
         this.amount = amount;
         this.transactionDate = transactionDate;
+        // id created with user id number + a random 2 digit number as string values
+        this.transaction_id =  Integer.parseInt(String.valueOf(userId) + (int)(Math.random() * 100));
+    }
+
+    public int getTransactionId() {
+        return transaction_id;
     }
 
     public int getUserId() {

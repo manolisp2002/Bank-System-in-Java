@@ -10,13 +10,12 @@ public abstract class BaseFrame extends JFrame {
     public BaseFrame(String title) {
       initialize(title);
     }
-   /* public BaseFrame(String title, User user) {
+   public BaseFrame(String title, User user) {
         this.user = user;
-
         initialize(title);
     }
 
-    */
+
 
     private void initialize(String title) {
         setTitle(title);
@@ -30,6 +29,8 @@ public abstract class BaseFrame extends JFrame {
     }
 
     protected abstract void addGuiComponents();
+
+
 
 
 
