@@ -1,11 +1,12 @@
 package View;
 
 import Model.User;
-
+import Controller.AuthenticatorController;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 
 public class LoginGui extends BaseFrame {
 
@@ -48,7 +49,7 @@ public class LoginGui extends BaseFrame {
                                                 String password = new String(passwordField.getPassword());
 
                                                 //validate the user
-                                                User user = Controller.ControllerJDBC.validateLogin(username, password);
+                                                User user = AuthenticatorController.authenticateLogin(username, password);
 
                                                 //if user is null means invalid account otherwise valid account
                                                 if(user != null) {

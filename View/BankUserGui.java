@@ -1,7 +1,6 @@
 package View;
 
 import Model.User;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -16,12 +15,12 @@ public class BankUserGui extends BaseFrame implements ActionListener {
     public JTextField getCurrentBalancField() {
         return currentBalanceField;
     }
+
     public BankUserGui(User user) {
         super("Bank User " + user.getUsername() , user);
 
 
     }
-
 
     @Override
     protected void addGuiComponents() {
@@ -87,7 +86,6 @@ public class BankUserGui extends BaseFrame implements ActionListener {
         add(logoutButton);
     }
 
-
     @Override
     public void actionPerformed(ActionEvent e) {
         String action = e.getActionCommand();
@@ -107,11 +105,11 @@ public class BankUserGui extends BaseFrame implements ActionListener {
         if (action.equalsIgnoreCase("Deposit") || action.equalsIgnoreCase("Withdraw")
                 || action.equalsIgnoreCase("Transfer")) {
 
-            bankingDialog.addBalance();
+            bankingDialog.addBalanceField();
             bankingDialog.addActionButton(action);
 
             if (action.equalsIgnoreCase("Transfer")) {
-                bankingDialog.addUserTransferfield();
+                bankingDialog.addUserTransferField();
             }
         }
         else if(action.equalsIgnoreCase("Last Transaction")){

@@ -8,7 +8,6 @@ public class User {
     private Transaction lastTransaction;
 
 
-    //construcor
     public  User(int id, String username, String password, double balance) {
         this.id = id;
         this.username = username;
@@ -39,4 +38,5 @@ public class User {
     public void addBalance(double amount) {
         this.balance += amount;
     }
+
 }

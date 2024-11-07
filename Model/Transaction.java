@@ -3,22 +3,39 @@ package Model;
 import java.util.Date;
 
 public class Transaction{
-    private final int transaction_id;
+    private final String transaction_id;
     private final int userId;
     private final String transactionType;
     private final double amount;
     private final Date transactionDate;
 
-    public Transaction(int userId, String transactionType, double amount, Date transactionDate){
+
+    public Transaction( int userId, String transactionType, double amount, Date transactionDate){
+
         this.userId = userId;
         this.transactionType = transactionType;
         this.amount = amount;
         this.transactionDate = transactionDate;
-        // id created with user id number + a random 2 digit number as string values
-        this.transaction_id =  Integer.parseInt(String.valueOf(userId) + (int)(Math.random() * 100));
+
+        this.transaction_id = generateUniqueTransactionId(userId);
     }
 
-    public int getTransactionId() {
+    //return a unique transaction id
+    public static String generateUniqueTransactionId(int userId) {
+
+        long timestamp = System.currentTimeMillis();
+
+
+        int randomPart = (int)(Math.random() * 10000);  // 4 τυχαία ψηφία
+
+
+        String transactionId = userId + "" + timestamp + "" + randomPart;
+
+        return transactionId;
+    }
+
+
+    public String getTransactionId() {
         return transaction_id;
     }
 

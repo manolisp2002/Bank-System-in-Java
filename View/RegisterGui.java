@@ -1,5 +1,6 @@
 package View;
 
+import Controller.AuthenticatorController;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -56,7 +57,7 @@ public class RegisterGui extends BaseFrame {
             //validate the user(this will change it to an other class) //user name mast be at least 5 chars long)
             if(password.equals(confirmPassword)  && !username.isEmpty() && !password.isEmpty()) {
                 //register the user
-                if(Controller.ControllerJDBC.registerUser(username, password)) {
+                if(AuthenticatorController.authenticateRegister(username, password)) {
 
                     //show the login gui
                     RegisterGui.this.dispose();
@@ -85,8 +86,6 @@ public class RegisterGui extends BaseFrame {
                 loginGui.setVisible(true);
             }
         });
-
-
 
         // Add the components to the frame
         add(bankinfo);

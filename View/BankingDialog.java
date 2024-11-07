@@ -2,9 +2,8 @@ package View;
 
 import Model.Transaction;
 import Model.User;
+import Controller.BankController;
 import Controller.ControllerJDBC;
-
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -42,7 +41,7 @@ public class BankingDialog extends JDialog implements ActionListener {
         this.user = user;
     }
 
-    public void addBalance(){
+    public void addBalanceField(){
 
         //balance label
         currentBalanceLabel = new JLabel("Current Balance: $" + user.getBalance());
@@ -76,7 +75,7 @@ public class BankingDialog extends JDialog implements ActionListener {
         add(actionButton);
     }
 
-    public void addUserTransferfield(){
+    public void addUserTransferField(){
         //enter user transfer label
         enterUserTransferLabel = new JLabel("Enter User to Transfer: ");
         enterUserTransferLabel.setBounds(0, 160, getWidth()-20, 20);
@@ -153,22 +152,8 @@ public class BankingDialog extends JDialog implements ActionListener {
         repaint();
     }
 
-
-    private void handleTransaction(String transactionType, double amountVal) {
-        Transaction transaction;
-
-        if (transactionType.equals("Deposit")) {
-            user.setBalance(user.getBalance() + amountVal);
-            //null for now, we will update this afterwards from the db
-            transaction = new Transaction(user.getId(), transactionType, amountVal, null);
-
-        }
-        else {
-            user.setBalance(user.getBalance() - amountVal);
-            //null for now, we will update this afterwards from the db
-            transaction = new Transaction(user.getId(), transactionType, (-amountVal), null);
-        }
-        if(ControllerJDBC.addTransactiontoDatabase(transaction) && ControllerJDBC.updateBalance(user)) {
+    private void handleTransactionDialog(String transactionType, double amountVal) {
+        if(BankController.handleTransaction(user, transactionType, amountVal)) {
             JOptionPane.showMessageDialog(this, transactionType + " Successfully");
 
             resetFieldsAndUpdateBalance();
@@ -197,8 +182,11 @@ public class BankingDialog extends JDialog implements ActionListener {
 
     }
 
-    private void handleTransfer(User user,String buttonPressed, double amountVal) {
-        if(ControllerJDBC.transfer(user, userTransferField.getText(), amountVal)) {
+    private void handleTransferDialog(User user,String buttonPressed, double amountVal) {
+
+
+        if(BankController.handleTransfer(user,userTransferField.getText() , amountVal)) {
+
             JOptionPane.showMessageDialog(this, buttonPressed + " Successfully");
             resetFieldsAndUpdateBalance();
         }
@@ -209,8 +197,6 @@ public class BankingDialog extends JDialog implements ActionListener {
 
     }
 
-
-
     @Override
     public void actionPerformed(ActionEvent e) {
         String buttonPressed = e.getActionCommand();
@@ -218,7 +204,7 @@ public class BankingDialog extends JDialog implements ActionListener {
         double amountVal = Double.parseDouble(amountField.getText());
 
         if(buttonPressed.equalsIgnoreCase("Deposit")){
-            handleTransaction(buttonPressed, amountVal);
+            handleTransactionDialog(buttonPressed, amountVal);
         }
         else{
             //check input amount is less than the current balance for withdraw or transfer
@@ -229,12 +215,12 @@ public class BankingDialog extends JDialog implements ActionListener {
             }
 
             if(buttonPressed.equalsIgnoreCase("Withdraw")){
-                handleTransaction(buttonPressed, amountVal);
+                handleTransactionDialog(buttonPressed, amountVal);
             }
             else{
                 String recipient = userTransferField.getText();
 
-                handleTransfer(user, buttonPressed, amountVal);
+                handleTransferDialog(user, buttonPressed, amountVal);
 
             }
 

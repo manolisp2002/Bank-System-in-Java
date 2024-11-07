@@ -15,8 +15,6 @@ public abstract class BaseFrame extends JFrame {
         initialize(title);
     }
 
-
-
     private void initialize(String title) {
         setTitle(title);
         setSize(420, 600);
